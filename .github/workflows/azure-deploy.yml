@@ -10,11 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Use PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -24,13 +19,10 @@ jobs:
           node-version: '20.12.1'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnm install
 
       - name: Build NestJS app
-        run: pnpm run build
-
-      - name: List build files
-        run: ls -al dist
+        run: npm run build
         
       - name: Azure Login
         uses: azure/login@v1
