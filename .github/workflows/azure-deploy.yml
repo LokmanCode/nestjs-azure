@@ -19,7 +19,7 @@ jobs:
           node-version: '20.12.1'
 
       - name: Install dependencies
-        run: pnm install
+        run: npm install
 
       - name: Build NestJS app
         run: npm run build
