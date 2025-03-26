@@ -10,38 +10,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Use PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20.12.1'
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install pnpm
-      run: npm install -g pnpm
-      
-    - name: Install dependencies
-      run: pnpm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.12.1'
 
-    - name: Build NestJS app
-      run: pnpm run build
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: List build files
-      run: ls -al dist
-      
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Build NestJS app
+        run: pnpm run build
 
-    - name: Deploy to Azure App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-        slot-name: 'production'
-        package: .
+      - name: List build files
+        run: ls -al dist
+        
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure Logout
-      run: |
-        az logout
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          slot-name: 'production'
+          package: .
+
+      - name: Azure Logout
+        run: |
+          az logout
